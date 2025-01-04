@@ -1,8 +1,16 @@
 using Bookify.Api.Extensions;
 using Bookify.Application;
 using Bookify.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region config serilog logger
+builder.Host.UseSerilog((hostingContext, loggerConfiguration) =>
+{
+	loggerConfiguration.ReadFrom.Configuration(hostingContext.Configuration);
+});
+#endregion
 
 // Add services to the container.
 
@@ -28,6 +36,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+#region serilog
+
+app.UseRequestContextLogging();
+
+app.UseSerilogRequestLogging();
+
+#endregion
+
 #region config Authentication
 app.UseAuthorization();
 
