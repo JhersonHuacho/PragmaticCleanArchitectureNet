@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 # Docker
 .containers\database
+/.containers/database
