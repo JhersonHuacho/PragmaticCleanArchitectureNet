@@ -13,7 +13,7 @@ namespace Bookify.Application.Bookings.ReserveBooking
 		private readonly IUserRepository _userRepository;
 		private readonly IApartmentRepository _apartmentRepository;
 		private readonly IBookingRepository _bookingRepository;
-		private readonly IUnitOfWorks _unitOfWorks;
+		private readonly IUnitOfWork _unitOfWorks;
 		private readonly PricingService _pricingService;
 		public readonly IDateTimeProvider _dateTimeProvider;
 
@@ -21,7 +21,7 @@ namespace Bookify.Application.Bookings.ReserveBooking
 			IUserRepository userRepository,
 			IApartmentRepository apartmentRepository,
 			IBookingRepository bookingRepository,
-			IUnitOfWorks unitOfWorks,
+			IUnitOfWork unitOfWorks,
 			PricingService pricingService,
 			IDateTimeProvider dateTimeProvider)
 		{
