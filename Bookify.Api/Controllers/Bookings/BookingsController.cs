@@ -34,8 +34,8 @@ namespace Bookify.Api.Controllers.Bookings
 			var command = new ReserveBookingCommand(
 				request.ApartmentId,
 				request.UserId,
-				request.StartDate,
-				request.EndDate);
+				DateOnly.FromDateTime(request.StartDate),
+				DateOnly.FromDateTime(request.EndDate));
 
 			var result = await _sender.Send(command, cancellationToken);
 

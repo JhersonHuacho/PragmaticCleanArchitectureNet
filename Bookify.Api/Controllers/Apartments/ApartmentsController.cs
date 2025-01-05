@@ -17,11 +17,11 @@ namespace Bookify.Api.Controllers.Apartments
 
 		[HttpGet]
 		public async Task<IActionResult> SearchsApartments(
-			[FromQuery] DateOnly startDate,
-			[FromQuery] DateOnly endDate,
+			[FromQuery] DateTime startDate,
+			[FromQuery] DateTime endDate,
 			CancellationToken cancellationToken)
 		{
-			var query = new SearchApartmentsQuery(startDate, endDate);
+			var query = new SearchApartmentsQuery(DateOnly.FromDateTime(startDate), DateOnly.FromDateTime(endDate));
 
 			var result = await _sender.Send(query, cancellationToken);
 

@@ -3,6 +3,8 @@
 	public sealed record ReserveBookingRequest(
 		Guid ApartmentId,
 		Guid UserId,
-		DateOnly StartDate,
-		DateOnly EndDate);	
+		//DateOnly StartDate,
+		DateTime StartDate,
+		//DateOnly EndDate);
+		DateTime EndDate);	
 }
