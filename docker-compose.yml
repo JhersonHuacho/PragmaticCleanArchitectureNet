@@ -1,5 +1,7 @@
 version: '3.4'
 
+name: bookify
+
 services:
   bookify.api:
     image: ${DOCKER_REGISTRY-}bookifyapi
@@ -11,28 +13,32 @@ services:
       - bookify-db
       
   bookify-db:
-    image: postgres:latest
+    image: postgres:13.22-alpine
     container_name: Bookify.Db
     environment:
       - POSTGRES_DB=bookify
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - ./.containers/database:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
   
   bookify-idp:
-    image: jboss/keycloak:latest
+    image: quay.io/keycloak/keycloak:23.0.0
     container_name: Bookify.Identity
+    command: start-dev --import-realm
     environment:
-      - KEYCLOAK_USER=admin
-      - KEYCLOAK_PASSWORD=admin
-      - KEYCLOAK_IMPORT=/tmp/bookify-realm-export.json
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
     volumes:
-      - ./.containers/identity:/opt/jboss/keycloak/standalone/data
-      - ./.files/bookify-realm-export.json:/tmp/bookify-realm-export.json 
+      - keycloak_data:/opt/keycloak/data
+      - ./.files/bookify-realm-export.json:/opt/keycloak/data/import/realm.json
     ports:
       - "18080:8080"
   
-  
+volumes:
+  postgres_data:
+    driver: local
+  keycloak_data:
+    driver: local
