@@ -26,6 +26,7 @@
 			_domainEvents.Clear();
 		}
 
+		// mi metodo es protected quiere decir que solo las clases que heredan de Entity pueden llamar a este metodo
 		protected void RaiseDomainEvent(IDomainEvent domainEvent)
 		{
 			_domainEvents.Add(domainEvent);

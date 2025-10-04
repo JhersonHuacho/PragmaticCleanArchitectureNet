@@ -28,11 +28,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-#region config Authentication
-app.UseAuthorization();
 
-app.UseAuthorization();
-#endregion
 app.UseCustomExceptionHandler();
 
 app.MapControllers();

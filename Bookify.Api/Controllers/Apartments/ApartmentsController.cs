@@ -2,30 +2,44 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Bookify.Api.Controllers.Apartments
+namespace Bookify.Api.Controllers.Apartments;
+
+[ApiController]
+[Route("api/apartments")]
+public class ApartmentsController : ControllerBase
 {
-	[ApiController]
-	[Route("api/apartments")]
-	public class ApartmentsController : ControllerBase
+	private readonly ISender _sender;
+
+    public ApartmentsController(ISender sender)
+    {
+        _sender = sender;
+	}
+
+	[HttpGet]
+	public async Task<IActionResult> SearchsApartments(
+		[FromQuery] DateTime startDate,
+		[FromQuery] DateTime endDate,
+		CancellationToken cancellationToken)
 	{
-		private readonly ISender _sender;
+		var query = new SearchApartmentsQuery(
+			DateOnly.FromDateTime(startDate), 
+			DateOnly.FromDateTime(endDate));
 
-        public ApartmentsController(ISender sender)
-        {
-            _sender = sender;
-		}
+		var result = await _sender.Send(query, cancellationToken);
 
-		[HttpGet]
-		public async Task<IActionResult> SearchsApartments(
-			[FromQuery] DateTime startDate,
-			[FromQuery] DateTime endDate,
-			CancellationToken cancellationToken)
-		{
-			var query = new SearchApartmentsQuery(DateOnly.FromDateTime(startDate), DateOnly.FromDateTime(endDate));
+		return Ok(result.Value);
+	}
 
-			var result = await _sender.Send(query, cancellationToken);
+	[HttpGet("dos")]
+	public async Task<IActionResult> SearchsApartmentsV2(
+		[FromQuery] DateOnly startDate,
+		[FromQuery] DateOnly endDate,
+		CancellationToken cancellationToken)
+	{
+		var query = new SearchApartmentsQuery(startDate, endDate);
 
-			return Ok(result.Value);
-		}
+		var result = await _sender.Send(query, cancellationToken);
+
+		return Ok(result.Value);
 	}
 }

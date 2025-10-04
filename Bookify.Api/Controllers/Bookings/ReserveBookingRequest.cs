@@ -6,5 +6,11 @@
 		//DateOnly StartDate,
 		DateTime StartDate,
 		//DateOnly EndDate);
-		DateTime EndDate);	
+		DateTime EndDate);
+
+	public sealed record ReserveBookingDosRequest(
+		Guid ApartmentId,
+		Guid UserId,
+		DateOnly StartDate,
+		DateOnly EndDate);
 }
