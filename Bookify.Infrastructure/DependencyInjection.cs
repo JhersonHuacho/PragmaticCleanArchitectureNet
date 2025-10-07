@@ -5,6 +5,7 @@ using Bookify.Application.Abstractions.Email;
 using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
+using Bookify.Domain.Reviews;
 using Bookify.Domain.Users;
 using Bookify.Infrastructure.Authentication;
 using Bookify.Infrastructure.Authorization;
@@ -42,39 +43,7 @@ namespace Bookify.Infrastructure
 			AddAuthorization(services);
 
 			return services;
-		}
-
-		private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
-		{
-			services
-				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer();
-
-			services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
-
-			services.ConfigureOptions<JwtBearerOptionsSetup>();
-
-			services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
-
-			services.AddTransient<AdminAuthorizationDelegatingHandler>();
-
-			services.AddHttpClient<IAuthenticationService, AuthenticationService>((serviceProvider, httpClient) =>
-				{
-					var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
-					httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
-				})
-				.AddHttpMessageHandler<AdminAuthorizationDelegatingHandler>();
-
-			services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
-				{
-					var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
-					httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
-				});
-
-			services.AddHttpContextAccessor();
-
-			services.AddScoped<IUserContext, UserContext>();
-		}
+		}		
 
 		private static void AddPersistence(IServiceCollection services, IConfiguration configuration)
 		{
@@ -92,6 +61,7 @@ namespace Bookify.Infrastructure
 			services.AddScoped<IUserRepository, UserRepository>();
 			services.AddScoped<IApartmentRepository, ApartmenRepository>();
 			services.AddScoped<IBookingRepository, BookingRepository>();
+			services.AddScoped<IReviewRepository, ReviewRepository>();
 
 			services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationDbContext>());
 			#endregion
@@ -100,6 +70,38 @@ namespace Bookify.Infrastructure
 			services.AddSingleton<ISqlConnectionFactory>(_ => new SqlConnectionFactory(connectionString));
 			SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
 			#endregion
+		}
+
+		private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
+		{
+			services
+				.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer();
+
+			services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
+
+			services.ConfigureOptions<JwtBearerOptionsSetup>();
+
+			services.Configure<KeycloakOptions>(configuration.GetSection("Keycloak"));
+
+			services.AddTransient<AdminAuthorizationDelegatingHandler>();
+
+			services.AddHttpClient<IAuthenticationService, AuthenticationService>((serviceProvider, httpClient) =>
+			{
+				var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+				httpClient.BaseAddress = new Uri(keycloakOptions.AdminUrl);
+			})
+				.AddHttpMessageHandler<AdminAuthorizationDelegatingHandler>();
+
+			services.AddHttpClient<IJwtService, JwtService>((serviceProvider, httpClient) =>
+			{
+				var keycloakOptions = serviceProvider.GetRequiredService<IOptions<KeycloakOptions>>().Value;
+				httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
+			});
+
+			services.AddHttpContextAccessor();
+
+			services.AddScoped<IUserContext, UserContext>();
 		}
 
 		private static void AddAuthorization(IServiceCollection services)
