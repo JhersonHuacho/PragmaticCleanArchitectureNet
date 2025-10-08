@@ -37,6 +37,15 @@ services:
     ports:
       - "18080:8080"
   
+  bookify-seq:
+    image: datalust/seq:2023.4
+    container_name: Bookify.Seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80" 
+  
 volumes:
   postgres_data:
     driver: local

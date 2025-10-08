@@ -1,16 +1,18 @@
-﻿using Bookify.Application.Abstractions.Messaging;
+﻿using Bookify.Domain.Abstractions;
 using MediatR;
 using Microsoft.Extensions.Logging;
+using Serilog.Context;
 
 namespace Bookify.Application.Abstractions.Behaviors
 {
 	public class LoggingBehaviors<TRequest, TResponse>
 		: IPipelineBehavior<TRequest, TResponse>
-		where TRequest : IBaseCommand
+		where TRequest : IBaseRequest
+		where TResponse : Result
 	{
-		private readonly ILogger<TRequest> _logger;
+		private readonly ILogger<LoggingBehaviors<TRequest, TResponse>> _logger;
 
-		public LoggingBehaviors(ILogger<TRequest> logger)
+		public LoggingBehaviors(ILogger<LoggingBehaviors<TRequest, TResponse>> logger)
 		{
 			_logger = logger;
 		}
@@ -24,17 +26,27 @@ namespace Bookify.Application.Abstractions.Behaviors
 
 			try
 			{
-				_logger.LogInformation("Executing Command {Command} processing started", name);
+				_logger.LogInformation("Executing request {Request} processing started", name);
 				
 				var result = await next();
-				
-				_logger.LogInformation("Command {Command} processing completed", name);
+
+				if (result.IsSuccess)
+				{
+					_logger.LogInformation("Request {Request} processed successfully", name);
+				}
+				else
+				{
+					using (LogContext.PushProperty("Error", result.Error, true))
+					{
+						_logger.LogWarning("Request {Request} processing failed with error", name);
+					}
+				}
 
 				return result;
 			} 
 			catch (Exception exception)
 			{
-				_logger.LogError(exception, "Command {Command} processing failed", name);
+				_logger.LogError(exception, "Request {Request} processing failed", name);
 				throw;
 			}
 		}
