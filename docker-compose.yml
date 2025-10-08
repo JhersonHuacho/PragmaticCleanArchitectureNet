@@ -44,7 +44,14 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5341:5341"
-      - "8081:80" 
+      - "8081:80"
+   
+  bookify-redis:
+     image: redis:7.0.11-alpine
+     container_name: Bookify.Redis
+     restart: always
+     ports:
+       - "6379:6379" 
   
 volumes:
   postgres_data:
