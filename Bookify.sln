@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E23F5184-782
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{620404FB-131C-4E16-8AFC-91C799772598}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Domain", "Bookify.Domain\Bookify.Domain.csproj", "{4DD299E7-1F99-454F-B043-054ECB7FE93F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Domain", "src\Bookify.Domain\Bookify.Domain.csproj", "{4DD299E7-1F99-454F-B043-054ECB7FE93F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Application", "Bookify.Application\Bookify.Application.csproj", "{6CEE3892-AC02-4B92-9B23-B80BEA803859}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Application", "src\Bookify.Application\Bookify.Application.csproj", "{6CEE3892-AC02-4B92-9B23-B80BEA803859}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Infrastructure", "Bookify.Infrastructure\Bookify.Infrastructure.csproj", "{711861B2-35C6-4C56-A8B4-F8AE1F5802F7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Infrastructure", "src\Bookify.Infrastructure\Bookify.Infrastructure.csproj", "{711861B2-35C6-4C56-A8B4-F8AE1F5802F7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Api", "Bookify.Api\Bookify.Api.csproj", "{957B0D85-C1D9-4566-BBAD-BD38F6A427CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bookify.Api", "src\Bookify.Api\Bookify.Api.csproj", "{957B0D85-C1D9-4566-BBAD-BD38F6A427CD}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{8A7C17EC-9ECE-47FB-8150-780869B6BF78}"
 EndProject
